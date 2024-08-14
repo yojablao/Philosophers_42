@@ -20,6 +20,7 @@ int check(char *s ,int flag)
 		return(0);
 	if(my_atoi(s) < 1 && flag == 1)
 		return(0);
+		
 	return(1);
 }
 
