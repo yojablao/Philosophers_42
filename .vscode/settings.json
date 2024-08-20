@@ -61,6 +61,7 @@
     "__threading_support": "c",
     "ostream": "c",
     "limits.h": "c",
-    "time.h": "c"
+    "time.h": "c",
+    "unistd.h": "c"
   }
 }

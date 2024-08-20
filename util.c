@@ -1,3 +1,4 @@
+
 #include "philo.h"
 int check(char *s ,int flag)
 {
@@ -28,8 +29,6 @@ long	my_atoi(const char *str)
 {
 	int					i;
 	long				result;
-	long				test;
-	long				holder;
 
 	result = 0;
 	i= 0;
@@ -39,7 +38,6 @@ long	my_atoi(const char *str)
 	{
 		result *= 10;
 		result += str[i] - '0';
-
 		i++;
 	}
 	return (result);

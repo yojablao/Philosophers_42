@@ -10,39 +10,54 @@
 # include <limits.h>
 
 typedef struct s_philo t_philo;
+typedef struct s_data t_data;
 
 typedef struct s_data
 {
-    bool            die;
-    pthread_mutex_t eat_msg;
-    pthread_mutex_t write_msg;
-    pthread_mutex_t die_msg;
-    pthread_mutex_t *forks;
-    t_philo         *thread;
-    // t_philo         monitor;
     long            nb_of_thread;
     long            max_meals;
     long            time_to_eat;
     long            time_to_sleep;
     long            time_to_die;
+    long            start_time;
 }  t_data ;
 
-struct s_philo
+typedef struct  s_main
 {
-    long            id;
-    long            meals;
-    pthread_t       philo;
-    pthread_mutex_t r_fork;
-    pthread_mutex_t l_fork;
+    t_data          data;
+    t_philo         *thread;
+    pthread_mutex_t *fork;
+    pthread_mutex_t mx_meals;
+    pthread_mutex_t eat_msg;
+    pthread_mutex_t time;
+    pthread_mutex_t write_msg;
+    pthread_mutex_t die_msg;
+    bool            die;
+
+}   t_main;
+
+
+typedef struct s_philo
+{
+    bool            die;
     long            last_eat;
+    long            meals;
     long            start;
+    pthread_t       philo;
+    long            id;
+    pthread_mutex_t *r_fork;
+    pthread_mutex_t *l_fork;
     t_data          *data;
-};
-int    philo_eat(t_philo *philo);
+    t_main      *mutxs;
+
+}   t_philo;
+void    printing(t_philo *data, char *cases);
+void *philo_routine(void *main);
 int     check(char *s, int flag);
 long    my_atoi(const char *str);
-void    init(t_data *philo);
-int     parse(t_data **data, char **av, int ac);
-
+bool    init(t_main *philo);
+long gettime();
+int     parse(t_main *data, char **av, int ac);
+ 
 #endif
 

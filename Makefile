@@ -3,7 +3,7 @@ head = philo.h
 src = main.c pars.c util.c
 obj = $(src: %.c=%.o)
 CC = cc 
-CFLAGE =  -pthread -fsanitize=address 
+CFLAGE =  -pthread  -fsanitize=thread -g
 %.o : %.c $(head)
 	CC CFLAGE -c -o $@ $<
 all : $(NAME)
