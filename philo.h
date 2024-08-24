@@ -22,6 +22,7 @@ typedef struct s_data
     long            start_time;
 }  t_data ;
 
+t_data          data;
 typedef struct  s_main
 {
     t_data          data;
@@ -29,6 +30,7 @@ typedef struct  s_main
     pthread_mutex_t *fork;
     pthread_mutex_t mx_meals;
     pthread_mutex_t eat_msg;
+    pthread_mutex_t sleep_msg;
     pthread_mutex_t time;
     pthread_mutex_t write_msg;
     pthread_mutex_t die_msg;
@@ -51,12 +53,15 @@ typedef struct s_philo
     t_main      *mutxs;
 
 }   t_philo;
-void    printing(t_philo *data, char *cases);
+void    printing(t_philo *data, t_data lol,char *cases);
 void *philo_routine(void *main);
 int     check(char *s, int flag);
 long    my_atoi(const char *str);
 bool    init(t_main *philo);
 long gettime();
+int  getfork_eat(t_philo *philo);
+int  sleep_think(t_philo *philo);
+int	ft_usleep(long int time);
 int     parse(t_main *data, char **av, int ac);
  
 #endif

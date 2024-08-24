@@ -81,6 +81,7 @@ bool init(t_main *philo)
         return 1;
 
     pthread_mutex_init(&philo->write_msg, NULL);
+    pthread_mutex_init(&philo->sleep_msg, NULL);
     pthread_mutex_init(&philo->die_msg, NULL);
     pthread_mutex_init(&philo->eat_msg, NULL);
     pthread_mutex_init(&philo->time, NULL);

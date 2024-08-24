@@ -1,6 +1,6 @@
 NAME = a.out
 head = philo.h
-src = main.c pars.c util.c
+src = main.c pars.c util.c action.c
 obj = $(src: %.c=%.o)
 CC = cc 
 CFLAGE =  -pthread  -fsanitize=thread -g
