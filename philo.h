@@ -59,6 +59,7 @@ int     check(char *s, int flag);
 long    my_atoi(const char *str);
 bool    init(t_main *philo);
 long gettime();
+long    s_time(t_data data);
 int  getfork_eat(t_philo *philo);
 int  sleep_think(t_philo *philo);
 int	ft_usleep(long int time);

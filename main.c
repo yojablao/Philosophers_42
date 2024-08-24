@@ -9,23 +9,21 @@ long gettime()
 }
 void    printing(t_philo *data, t_data lol,char *cases)
 {
-    // static long int time = gettime();
-
-
     if(pthread_mutex_lock(&data->mutxs->write_msg) != 0)
         return ;
-    if(strcmp(cases, "l_fork") == 0)
-        printf("%ld %ld has taken a fork\n", gettime() -  lol.start_time  ,data->id);
-    else if(strcmp(cases, "r_fork") == 0)
-        printf("%ld %ld has taken a  r fork\n", gettime() -  lol.start_time  ,data->id);
-    else if(strcmp(cases, "eat") == 0)
-        printf("%ld %ld is eating\n", gettime() - lol.start_time,data->id);
-    else if(strcmp(cases, "sleep") == 0)
-        printf("%ld %ld is sleeping\n", gettime() -  lol.start_time,data->id);
-    else if(strcmp(cases, "think") == 0)
-        printf("%ld %ld  is thinking\n",gettime() -  lol.start_time,data->id);
-    else if(strcmp(cases, " die") == 0)
-        printf("%ld %ld died\n",gettime() -  data->data->start_time,data->id);
+    // if(!if_die(data))
+    // {
+        if(strcmp(cases, "l_fork") == 0)
+            printf("%ld %ld has taken a fork\n", gettime() -  lol.start_time  ,data->id);
+        else if(strcmp(cases, "r_fork") == 0)
+            printf("%ld %ld has taken a fork\n", gettime() -  lol.start_time  ,data->id);
+        else if(strcmp(cases, "eat") == 0)
+            printf("%ld %ld is eating\n", gettime() - lol.start_time,data->id);
+        else if(strcmp(cases, "sleep") == 0)
+            printf("%ld %ld is sleeping\n", gettime() -  lol.start_time,data->id);
+        else if(strcmp(cases, "think") == 0)
+            printf("%ld %ld  is thinking\n",gettime() -  lol.start_time,data->id);
+    // }
     pthread_mutex_unlock(&data->mutxs->write_msg);
  
 }
@@ -34,10 +32,9 @@ int	ft_usleep(long int time)
 	long int	start_time;
 
 	start_time = gettime();
-    
         usleep(time);
     if(((gettime() - start_time) * 1000 ) < time)
-        usleep(100);
+        usleep((gettime() - start_time) * 1000);
 	return (1);
 }
 
@@ -66,7 +63,8 @@ void *philo_routine(void *main)
     if(philo->id == 0)
         philo->data->start_time = gettime();
     if(philo->id % 2 == 0)
-        ft_usleep(philo->data->time_to_die * 500);
+        ft_usleep(philo->data->time_to_die / 10);
+    philo->start = s_time(*philo->data);
     while(philo->die == 0)
     {
         if(getfork_eat(philo) == 1)
@@ -85,23 +83,19 @@ int    stop(t_main *main)
     i = -1;
     while (main->die == false)
     {
+         pthread_mutex_lock(&main->die_msg);
         while(++i < main->data.nb_of_thread)
         {
-        //     printf("lol\n");
-        //     pthread_mutex_lock(&main->time);
-        //     pthread_mutex_lock(&main->mx_meals);
-            if( main->thread[i].start >  main->data.time_to_die + main->thread[i].meals || main->data.max_meals <= main->thread[i].meals)
+
+            if( main->thread[i].die == 1)
             {
-                // pthread_mutex_lock(&main->die_msg);
-                // main->die = true;
-                // pthread_mutex_unlock(&main->die_msg);
-                pthread_mutex_unlock(&main->time);
-                pthread_mutex_unlock(&main->mx_meals);
+
+               exit(1);
+
                 return 1;
             }       
-        //     pthread_mutex_unlock(&main->time);
-        //     pthread_mutex_unlock(&main->mx_meals);
         }
+         pthread_mutex_unlock(&main->die_msg);
     }
     return 0;
 }
@@ -120,8 +114,8 @@ int main(int ac ,char **av)
     while(++i < philo.data.nb_of_thread)
          if(pthread_create(&philo.thread[i].philo,NULL,&philo_routine,&philo.thread[i]) != 0 )
             return 1;
-    // if(stop(&philo) == 1)
-    //      return(printing(&philo.thread[i],"die"),free_all(&philo) , 1);
+    if(stop(&philo) == 1)
+         return(printing(&philo.thread[i],philo.data,"die"),free_all(&philo) , 1);
     endit(&philo);
 
         
