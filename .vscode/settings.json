@@ -55,13 +55,5 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "files.associations": {
-    "stdbool.h": "c",
-    "__threading_support": "c",
-    "ostream": "c",
-    "limits.h": "c",
-    "time.h": "c",
-    "unistd.h": "c"
-  }
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }
