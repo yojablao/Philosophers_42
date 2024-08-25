@@ -20,7 +20,6 @@ int     parse(t_main *data ,char **av, int ac)
         else
             data->data.max_meals = -1;
     } 
-    data->die = 0;
     data->data.nb_of_thread = my_atoi(av[1]);
     data->data.time_to_die = my_atoi(av[2]);
     data->data.time_to_eat = my_atoi(av[3]);
@@ -28,64 +27,23 @@ int     parse(t_main *data ,char **av, int ac)
 
     return(true);
 } 
-// void    init_data(t_data *dest,t_data src)
-// {
-//     dest->nb_of_thread = src.nb_of_thread;
-//     dest->time_to_die = src.time_to_die;
-//     dest->time_to_eat = src.time_to_eat;
-//     dest->time_to_sleep = src.time_to_sleep;
-//     dest->die = false;
-//     dest->meals = 0;
 
-// } 
-// bool init(t_main *philo)
-// {
-//     int i = -1;
-//     if(!(philo->fork = malloc(sizeof(pthread_mutex_t) * philo->data.nb_of_thread)))
-//         return 1;
-//     if(!(philo->thread = malloc(sizeof(t_philo ) * philo->data.nb_of_thread)))
-//         return 1;
-//     pthread_mutex_init(&philo->write_msg,NULL);
-//     pthread_mutex_init(&philo->die_msg,NULL);
-//     pthread_mutex_init(&philo->eat_msg,NULL);
-//     while(++i < philo->data.nb_of_thread)
-//         pthread_mutex_init(&philo->fork[i],NULL);
-//     i = -1;
-
-//     while(++i < philo->data.nb_of_thread)
-//     {
-//         if(i+1 == philo->data.nb_of_thread)
-//             philo->thread[i].l_fork = &philo->fork[0];
-//         else
-//             philo->thread[i].l_fork = &philo->fork[i + 1];
-//         philo->thread[i].philo =  malloc(sizeof(pthread_t));
-//         philo->thread[i].id = i;
-//         philo->thread[i].mutxs = philo;
-//         philo->thread[i].data = &philo->data;
-//         philo->thread[i].r_fork = &philo->fork[i];
-//         philo->thread[i].last_eat = 0;
-//         philo->thread[i].meals = 0;
-//         philo->thread[i].die = 0;
-//         philo->thread[i].start = 0;
-//     }
-
-//     return 0;
-
-// }
 bool init(t_main *philo)
 {
     int i = -1;
     if (!(philo->fork = malloc(sizeof(pthread_mutex_t) * philo->data.nb_of_thread)))
         return 1;
-    if (!(philo->thread = malloc(sizeof(t_philo) * philo->data.nb_of_thread)))
+    if (!(philo->threads = malloc(sizeof(t_philo) * philo->data.nb_of_thread)))
         return 1;
-
-    pthread_mutex_init(&philo->write_msg, NULL);
-    pthread_mutex_init(&philo->sleep_msg, NULL);
-    pthread_mutex_init(&philo->die_msg, NULL);
-    pthread_mutex_init(&philo->eat_msg, NULL);
-    pthread_mutex_init(&philo->time, NULL);
-    pthread_mutex_init(&philo->mx_meals, NULL);
+    if (!(philo->mutex = malloc(sizeof(t_mutex))))
+        return 1;
+    
+    pthread_mutex_init(&philo->mutex->write_msg, NULL);
+    pthread_mutex_init(&philo->mutex->sleep_msg, NULL);
+    pthread_mutex_init(&philo->mutex->die_msg, NULL);
+    pthread_mutex_init(&philo->mutex->eat_msg, NULL);
+    pthread_mutex_init(&philo->mutex->time, NULL);
+    pthread_mutex_init(&philo->mutex->mx_meals, NULL);
 
     while (++i < philo->data.nb_of_thread)
         pthread_mutex_init(&philo->fork[i], NULL);
@@ -94,19 +52,19 @@ bool init(t_main *philo)
     while (++i < philo->data.nb_of_thread)
     {
         if (i + 1 == philo->data.nb_of_thread)
-            philo->thread[i].l_fork = &philo->fork[0];
+            philo->threads[i].l_fork = &philo->fork[0];
         else
-            philo->thread[i].l_fork = &philo->fork[i + 1];
+            philo->threads[i].l_fork = &philo->fork[i + 1];
         
-        philo->thread[i].philo = malloc(sizeof(pthread_t));
-        philo->thread[i].id = i;
-        philo->thread[i].mutxs = philo;
-        philo->thread[i].data = &philo->data;
-        philo->thread[i].r_fork = &philo->fork[i];
-        philo->thread[i].last_eat = 0;
-        philo->thread[i].meals = 0;
-        philo->thread[i].die = 0;
-        philo->thread[i].start = 1;
+        philo->threads[i].r_fork = &philo->fork[i];
+        philo->threads[i].philo = malloc(sizeof(pthread_t));
+        philo->threads[i].id = i;
+        philo->threads[i].mutxs = philo->mutex;
+        philo->threads[i].data = &philo->data;
+        philo->threads[i].last_eat = 0;
+        philo->threads[i].meals = 0;
+        philo->threads[i].die = 0;
+        philo->threads[i].start = 1;
     }
 
     return 0;

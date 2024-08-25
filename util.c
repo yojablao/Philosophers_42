@@ -42,3 +42,20 @@ long	my_atoi(const char *str)
 	}
 	return (result);
 }
+void free_all(t_main *main)
+{
+    int i;
+
+    pthread_mutex_destroy(&main->mutex->write_msg);
+    pthread_mutex_destroy(&main->mutex->sleep_msg);
+    pthread_mutex_destroy(&main->mutex->eat_msg);
+    pthread_mutex_destroy(&main->mutex->time);
+    pthread_mutex_destroy(&main->mutex->mx_meals);
+
+    for (i = 0; i < main->data.nb_of_thread; i++)
+        pthread_mutex_destroy(&main->fork[i]);
+
+    free(main->threads);
+    free(main->fork);
+    free(main->mutex);
+}

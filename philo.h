@@ -22,48 +22,53 @@ typedef struct s_data
     long            start_time;
 }  t_data ;
 
-t_data          data;
-typedef struct  s_main
+typedef struct  s_mutex
 {
-    t_data          data;
-    t_philo         *thread;
-    pthread_mutex_t *fork;
     pthread_mutex_t mx_meals;
     pthread_mutex_t eat_msg;
     pthread_mutex_t sleep_msg;
     pthread_mutex_t time;
     pthread_mutex_t write_msg;
     pthread_mutex_t die_msg;
-    bool            die;
 
+}   t_mutex;
+
+typedef struct  s_main
+{
+    t_data          data;
+    t_mutex         *mutex;
+    t_philo         *threads;
+    pthread_mutex_t         *fork;
 }   t_main;
 
 
 typedef struct s_philo
 {
-    bool            die;
-    long            last_eat;
-    long            meals;
-    long            start;
-    pthread_t       philo;
-    long            id;
     pthread_mutex_t *r_fork;
     pthread_mutex_t *l_fork;
+    pthread_t       philo;
+    long            id;
+    t_mutex         *mutxs;
     t_data          *data;
-    t_main      *mutxs;
+    long            last_eat;
+    long            meals;
+    bool            die;
+    long            start;
 
 }   t_philo;
-void    printing(t_philo *data, t_data lol,char *cases);
+void    printing(t_philo *data, long lol,char *cases);
 void *philo_routine(void *main);
 int     check(char *s, int flag);
 long    my_atoi(const char *str);
-bool    init(t_main *philo);
+bool init(t_main *philo);
 long gettime();
-long    s_time(t_data data);
+void free_all(t_main *main);
+long    s_time(long data);
 int  getfork_eat(t_philo *philo);
 int  sleep_think(t_philo *philo);
 int	ft_usleep(long int time);
 int     parse(t_main *data, char **av, int ac);
+void if_die(t_main *philo);
  
 #endif
 
