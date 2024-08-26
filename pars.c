@@ -15,15 +15,15 @@ int     parse(t_main *data ,char **av, int ac)
     {
         if(!check(av[5] , 1))
             return 0;
-         if (ac == 6)
             data->data.max_meals = my_atoi(av[5]);
-        else
-            data->data.max_meals = -1;
     } 
+    else
+            data->data.max_meals = -1;
     data->data.nb_of_thread = my_atoi(av[1]);
     data->data.time_to_die = my_atoi(av[2]);
     data->data.time_to_eat = my_atoi(av[3]);
     data->data.time_to_sleep = my_atoi(av[4]);
+    data->data.finish_meals = 0;
 
     return(true);
 } 

@@ -20,6 +20,7 @@ typedef struct s_data
     long            time_to_sleep;
     long            time_to_die;
     long            start_time;
+    long            finish_meals;
 }  t_data ;
 
 typedef struct  s_mutex
