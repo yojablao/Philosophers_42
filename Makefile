@@ -2,8 +2,9 @@ NAME = philo
 head = philo.h
 src = main.c pars.c util.c action.c
 obj = $(src:%.c=%.o)
-CC = cc
-CFLAGE =  -pthread -g #-fsanitize=thread
+CC = cc 
+CFLAGE = -Wall -Wextra -Werror -pthread #-g -fsanitize=thread
+
 %.o : %.c $(head)
 	$(CC) $(CFLAGE) -c -o $@ $<
 all : $(NAME)
@@ -21,5 +22,5 @@ re: fclean all
 
 push:
 	git add .
-	git commit -m "push"
+	git commit -m "yojablao"
 	git push

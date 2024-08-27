@@ -6,7 +6,7 @@
 /*   By: yojablao <yojablao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:31:57 by yojablao          #+#    #+#             */
-/*   Updated: 2024/08/27 16:42:48 by yojablao         ###   ########.fr       */
+/*   Updated: 2024/08/27 17:46:45 by yojablao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void	if_die(t_main *philo)
 			}
 			pthread_mutex_unlock(&philo->mutex->time);
 		}
+		pthread_mutex_lock(&philo->mutex->mx_meals);
 		if (philo->data.max_meals > -1)
-		{
 			if (philo->data.finish_meals >= philo->data.nb_of_thread)
 				return ((void)pthread_mutex_lock(&philo->mutex->write_msg));
-		}
+		pthread_mutex_unlock(&philo->mutex->mx_meals);
 	}
 }
 

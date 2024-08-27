@@ -6,7 +6,7 @@
 /*   By: yojablao <yojablao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:43:20 by yojablao          #+#    #+#             */
-/*   Updated: 2024/08/27 16:45:27 by yojablao         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:57:28 by yojablao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,8 @@ void	philosopher(t_main *philo)
 	if_die(philo);
 }
 
-// void leak(){system("leaks philo");}
 int	main(int ac, char **av)
 {
-	// atexit(leak);
 	t_main	philo;
 
 	if (!parse(&philo, av, ac))

@@ -6,7 +6,7 @@
 /*   By: yojablao <yojablao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:59:45 by yojablao          #+#    #+#             */
-/*   Updated: 2024/08/27 16:47:08 by yojablao         ###   ########.fr       */
+/*   Updated: 2024/08/27 16:58:14 by yojablao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ int	parse(t_main *data, char **av, int ac)
 
 bool	mutex_init(t_mutex *mutex)
 {
-	if(pthread_mutex_init(&mutex->write_msg, NULL) == -1)
+	if (pthread_mutex_init(&mutex->write_msg, NULL) == -1)
 		return (1);
-	if(pthread_mutex_init(&mutex->time, NULL) == -1)
+	if (pthread_mutex_init(&mutex->time, NULL) == -1)
 		return (1);
-	pthread_mutex_init(&mutex->mx_meals, NULL);
+	if (pthread_mutex_init(&mutex->mx_meals, NULL) == -1)
+		return (1);
 	return (0);
 }
 
